@@ -1,0 +1,112 @@
+2019-05-23 15:58:03,209 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         - --------------------------------------------------------------------------------
+2019-05-23 15:58:03,210 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -  Starting StandaloneSessionClusterEntrypoint (Version: 1.8.0, Rev:4caec0d, Date:03.04.2019 @ 13:25:54 PDT)
+2019-05-23 15:58:03,210 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -  OS current user: davaa
+2019-05-23 15:58:03,211 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -  Current Hadoop/Kerberos user: <no hadoop dependency found>
+2019-05-23 15:58:03,211 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -  JVM: Java HotSpot(TM) 64-Bit Server VM - Oracle Corporation - 1.8/25.201-b09
+2019-05-23 15:58:03,211 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -  Maximum heap size: 981 MiBytes
+2019-05-23 15:58:03,211 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -  JAVA_HOME: (not set)
+2019-05-23 15:58:03,211 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -  No Hadoop Dependency available
+2019-05-23 15:58:03,211 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -  JVM Options:
+2019-05-23 15:58:03,212 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -     -Xms1024m
+2019-05-23 15:58:03,212 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -     -Xmx1024m
+2019-05-23 15:58:03,212 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -     -Dlog.file=/Users/davaa/flink-1.8.0/log/flink-davaa-standalonesession-0-Battulgas-MBP.lan.log
+2019-05-23 15:58:03,212 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -     -Dlog4j.configuration=file:/Users/davaa/flink-1.8.0/conf/log4j.properties
+2019-05-23 15:58:03,212 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -     -Dlogback.configurationFile=file:/Users/davaa/flink-1.8.0/conf/logback.xml
+2019-05-23 15:58:03,212 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -  Program Arguments:
+2019-05-23 15:58:03,212 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -     --configDir
+2019-05-23 15:58:03,212 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -     /Users/davaa/flink-1.8.0/conf
+2019-05-23 15:58:03,212 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -     --executionMode
+2019-05-23 15:58:03,213 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -     cluster
+2019-05-23 15:58:03,213 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         -  Classpath: /Users/davaa/flink-1.8.0/lib/flink-metrics-prometheus-1.8.0.jar:/Users/davaa/flink-1.8.0/lib/log4j-1.2.17.jar:/Users/davaa/flink-1.8.0/lib/slf4j-log4j12-1.7.15.jar:/Users/davaa/flink-1.8.0/lib/flink-dist_2.11-1.8.0.jar:::
+2019-05-23 15:58:03,213 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         - --------------------------------------------------------------------------------
+2019-05-23 15:58:03,215 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         - Registered UNIX signal handlers for [TERM, HUP, INT]
+2019-05-23 15:58:03,249 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: jobmanager.rpc.address, localhost
+2019-05-23 15:58:03,249 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: jobmanager.rpc.port, 6123
+2019-05-23 15:58:03,249 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: jobmanager.heap.size, 1024m
+2019-05-23 15:58:03,249 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: taskmanager.heap.size, 1024m
+2019-05-23 15:58:03,250 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: taskmanager.numberOfTaskSlots, 1
+2019-05-23 15:58:03,250 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: parallelism.default, 1
+2019-05-23 15:58:03,251 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: rest.port, 8081
+2019-05-23 15:58:03,252 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: metrics.reporters, prom
+2019-05-23 15:58:03,252 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: metrics.reporter.prom.class, org.apache.flink.metrics.prometheus.PrometheusReporter
+2019-05-23 15:58:03,252 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: metrics.reporter.prom.host, localhost
+2019-05-23 15:58:03,253 INFO  org.apache.flink.configuration.GlobalConfiguration            - Loading configuration property: metrics.reporter.prom.port, 9250-9260
+2019-05-23 15:58:03,370 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         - Starting StandaloneSessionClusterEntrypoint.
+2019-05-23 15:58:03,370 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         - Install default filesystem.
+2019-05-23 15:58:03,379 INFO  org.apache.flink.core.fs.FileSystem                           - Hadoop is not in the classpath/dependencies. The extended set of supported File Systems via Hadoop is not available.
+2019-05-23 15:58:03,401 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         - Install security context.
+2019-05-23 15:58:03,414 INFO  org.apache.flink.runtime.security.modules.HadoopModuleFactory  - Cannot create Hadoop Security Module because Hadoop cannot be found in the Classpath.
+2019-05-23 15:58:03,447 INFO  org.apache.flink.runtime.security.SecurityUtils               - Cannot install HadoopSecurityContext because Hadoop cannot be found in the Classpath.
+2019-05-23 15:58:03,448 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         - Initializing cluster services.
+2019-05-23 15:58:03,767 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcServiceUtils         - Trying to start actor system at localhost:6123
+2019-05-23 15:58:04,314 INFO  akka.event.slf4j.Slf4jLogger                                  - Slf4jLogger started
+2019-05-23 15:58:04,401 INFO  akka.remote.Remoting                                          - Starting remoting
+2019-05-23 15:58:04,607 INFO  akka.remote.Remoting                                          - Remoting started; listening on addresses :[akka.tcp://flink@localhost:6123]
+2019-05-23 15:58:04,622 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcServiceUtils         - Actor system started at akka.tcp://flink@localhost:6123
+2019-05-23 15:58:04,655 INFO  org.apache.flink.configuration.Configuration                  - Config uses fallback configuration key 'jobmanager.rpc.address' instead of key 'rest.address'
+2019-05-23 15:58:04,665 INFO  org.apache.flink.runtime.blob.BlobServer                      - Created BLOB server storage directory /var/folders/ry/yws5tww97dgfjvq2mwdxfnkr0000gn/T/blobStore-1126e1dc-5f2c-475a-b532-13a8b9a0d1eb
+2019-05-23 15:58:04,682 INFO  org.apache.flink.runtime.blob.BlobServer                      - Started BLOB server at 0.0.0.0:64322 - max concurrent requests: 50 - max backlog: 1000
+2019-05-23 15:58:04,710 INFO  org.apache.flink.runtime.metrics.MetricRegistryImpl           - Configuring prom with {port=9250-9260, host=localhost, class=org.apache.flink.metrics.prometheus.PrometheusReporter}.
+2019-05-23 15:58:04,726 INFO  org.apache.flink.metrics.prometheus.PrometheusReporter        - Started PrometheusReporter HTTP server on port 9250.
+2019-05-23 15:58:04,726 INFO  org.apache.flink.runtime.metrics.MetricRegistryImpl           - Reporting metrics for reporter prom of type org.apache.flink.metrics.prometheus.PrometheusReporter.
+2019-05-23 15:58:04,728 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         - Trying to start actor system at localhost:0
+2019-05-23 15:58:04,758 INFO  akka.event.slf4j.Slf4jLogger                                  - Slf4jLogger started
+2019-05-23 15:58:04,765 INFO  akka.remote.Remoting                                          - Starting remoting
+2019-05-23 15:58:04,773 INFO  akka.remote.Remoting                                          - Remoting started; listening on addresses :[akka.tcp://flink-metrics@localhost:64323]
+2019-05-23 15:58:04,775 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         - Actor system started at akka.tcp://flink-metrics@localhost:64323
+2019-05-23 15:58:04,781 INFO  org.apache.flink.runtime.dispatcher.FileArchivedExecutionGraphStore  - Initializing FileArchivedExecutionGraphStore: Storage directory /var/folders/ry/yws5tww97dgfjvq2mwdxfnkr0000gn/T/executionGraphStore-a89c30c1-df76-4ec8-8e18-689939473402, expiration time 3600000, maximum cache size 52428800 bytes.
+2019-05-23 15:58:04,817 INFO  org.apache.flink.runtime.blob.TransientBlobCache              - Created BLOB cache storage directory /var/folders/ry/yws5tww97dgfjvq2mwdxfnkr0000gn/T/blobStore-123a2ba1-9181-4376-b974-ac34e3fa55bf
+2019-05-23 15:58:04,850 INFO  org.apache.flink.configuration.Configuration                  - Config uses fallback configuration key 'jobmanager.rpc.address' instead of key 'rest.address'
+2019-05-23 15:58:04,850 INFO  org.apache.flink.configuration.Configuration                  - Config uses fallback configuration key 'rest.port' instead of key 'rest.bind-port'
+2019-05-23 15:58:04,853 WARN  org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint    - Upload directory /var/folders/ry/yws5tww97dgfjvq2mwdxfnkr0000gn/T/flink-web-bdd0e621-9234-497a-84ea-3b43862a6371/flink-web-upload does not exist, or has been deleted externally. Previously uploaded files are no longer available.
+2019-05-23 15:58:04,855 INFO  org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint    - Created directory /var/folders/ry/yws5tww97dgfjvq2mwdxfnkr0000gn/T/flink-web-bdd0e621-9234-497a-84ea-3b43862a6371/flink-web-upload for file uploads.
+2019-05-23 15:58:04,857 INFO  org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint    - Starting rest endpoint.
+2019-05-23 15:58:05,347 INFO  org.apache.flink.runtime.webmonitor.WebMonitorUtils           - Determined location of main cluster component log file: /Users/davaa/flink-1.8.0/log/flink-davaa-standalonesession-0-Battulgas-MBP.lan.log
+2019-05-23 15:58:05,347 INFO  org.apache.flink.runtime.webmonitor.WebMonitorUtils           - Determined location of main cluster component stdout file: /Users/davaa/flink-1.8.0/log/flink-davaa-standalonesession-0-Battulgas-MBP.lan.out
+2019-05-23 15:58:05,572 INFO  org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint    - Rest endpoint listening at localhost:8081
+2019-05-23 15:58:05,573 INFO  org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint    - http://localhost:8081 was granted leadership with leaderSessionID=00000000-0000-0000-0000-000000000000
+2019-05-23 15:58:05,573 INFO  org.apache.flink.runtime.dispatcher.DispatcherRestEndpoint    - Web frontend listening at http://localhost:8081.
+2019-05-23 15:58:05,856 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService              - Starting RPC endpoint for org.apache.flink.runtime.resourcemanager.StandaloneResourceManager at akka://flink/user/resourcemanager .
+2019-05-23 15:58:05,904 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService              - Starting RPC endpoint for org.apache.flink.runtime.dispatcher.StandaloneDispatcher at akka://flink/user/dispatcher .
+2019-05-23 15:58:05,973 INFO  org.apache.flink.runtime.resourcemanager.StandaloneResourceManager  - ResourceManager akka.tcp://flink@localhost:6123/user/resourcemanager was granted leadership with fencing token 00000000000000000000000000000000
+2019-05-23 15:58:05,974 INFO  org.apache.flink.runtime.resourcemanager.slotmanager.SlotManager  - Starting the SlotManager.
+2019-05-23 15:58:06,018 INFO  org.apache.flink.runtime.dispatcher.StandaloneDispatcher      - Dispatcher akka.tcp://flink@localhost:6123/user/dispatcher was granted leadership with fencing token 00000000-0000-0000-0000-000000000000
+2019-05-23 15:58:06,021 INFO  org.apache.flink.runtime.dispatcher.StandaloneDispatcher      - Recovering all persisted jobs.
+2019-05-23 15:58:07,274 INFO  org.apache.flink.runtime.resourcemanager.StandaloneResourceManager  - Registering TaskManager with ResourceID 483f5151fb7f2d1f8093cc3bb7f23b5f (akka.tcp://flink@10.93.0.179:64325/user/taskmanager_0) at ResourceManager
+2019-05-23 15:58:07,675 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:10,268 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:13,267 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:16,755 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:19,279 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:22,269 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:25,268 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:28,727 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:31,523 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:34,406 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:37,535 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:40,375 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:43,531 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:46,353 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:49,704 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:52,302 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:55,477 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:58:58,427 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:01,308 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:04,476 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:07,569 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:10,263 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:13,456 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:16,454 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:19,434 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:22,450 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:25,424 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:28,427 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:31,357 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:34,509 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:37,264 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:40,263 ERROR org.apache.flink.runtime.rest.handler.job.JobDetailsHandler   - Exception occurred in REST handler: Job cf11033bc2dea0a68c05a94ed9a664b0 not found
+2019-05-23 15:59:40,722 WARN  akka.remote.ReliableDeliverySupervisor                        - Association with remote system [akka.tcp://flink@10.93.0.179:64325] has failed, address is now gated for [50] ms. Reason: [Disassociated] 
+2019-05-23 15:59:40,722 WARN  akka.remote.ReliableDeliverySupervisor                        - Association with remote system [akka.tcp://flink-metrics@10.93.0.179:64326] has failed, address is now gated for [50] ms. Reason: [Disassociated] 
+2019-05-23 15:59:40,994 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint         - RECEIVED SIGNAL 15: SIGTERM. Shutting down as requested.
+2019-05-23 15:59:40,995 INFO  org.apache.flink.runtime.blob.TransientBlobCache              - Shutting down BLOB cache
+2019-05-23 15:59:41,001 INFO  org.apache.flink.runtime.blob.BlobServer                      - Stopped BLOB server at 0.0.0.0:64322

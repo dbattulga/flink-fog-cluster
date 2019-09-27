@@ -1,0 +1,85 @@
+version: "3"
+services:
+  jobmanager:
+    image: digitaljazz/flink-1.8.0-armv7:latest
+    ports:
+      - "8081:8081"
+    command: jobmanager.sh start-foreground jobmanager
+    networks:
+      flinknet:
+        aliases:
+          - jobmanager
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == worker04
+
+  taskmanager:
+    image: digitaljazz/flink-1.8.0-armv7:latest
+    depends_on:
+      - jobmanager
+    command: taskmanager.sh start-foreground -Djobmanager.rpc.address=jobmanager
+    networks:
+      - flinknet
+    deploy:
+      replicas: 3
+      placement:
+        constraints:
+          - node.hostname != worker04
+          - node.hostname != worker01
+
+  mosquitto:
+    image: eclipse-mosquitto:1.6.5
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    networks:
+      flinknet:
+        aliases:
+          - mosquitto
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == worker01
+
+  prometheus:
+    image: prom/prometheus:latest
+    networks:
+      flinknet:
+        aliases:
+          - prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == worker04
+
+  grafana:
+    image: grafana/grafana:latest
+    depends_on:
+      - prometheus
+    networks:
+      flinknet:
+        aliases:
+          - grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == worker04
+
+networks:
+  flinknet:
+    driver: overlay
