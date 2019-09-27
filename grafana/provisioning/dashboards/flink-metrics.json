@@ -1,0 +1,342 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "iteration": 1559052005061,
+  "links": [],
+  "panels": [
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "Prometheus",
+      "fill": 1,
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "hideTimeOverride": false,
+      "id": 2,
+      "interval": "1m",
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "repeat": "operator",
+      "repeatDirection": "h",
+      "scopedVars": {
+        "operator": {
+          "selected": true,
+          "text": "0a448493b4782967b150582570326227",
+          "value": "0a448493b4782967b150582570326227"
+        }
+      },
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "flink_taskmanager_job_latency_source_id_operator_id_operator_subtask_index_latency{job_id=\"$job_id\", operator_id=\"$operator\", quantile=\"0.5\"}",
+          "format": "heatmap",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "0.5",
+          "refId": "A"
+        },
+        {
+          "expr": "flink_taskmanager_job_latency_source_id_operator_id_operator_subtask_index_latency{job_id=\"$job_id\", operator_id=\"$operator\", quantile=\"0.75\"}",
+          "format": "heatmap",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "0.75",
+          "refId": "B"
+        },
+        {
+          "expr": "flink_taskmanager_job_latency_source_id_operator_id_operator_subtask_index_latency{job_id=\"$job_id\", operator_id=\"$operator\", quantile=\"0.95\"}",
+          "format": "heatmap",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "0.95",
+          "refId": "C"
+        },
+        {
+          "expr": "flink_taskmanager_job_latency_source_id_operator_id_operator_subtask_index_latency{job_id=\"$job_id\", operator_id=\"$operator\", quantile=\"0.98\"}",
+          "format": "heatmap",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "0.98",
+          "refId": "D"
+        },
+        {
+          "expr": "flink_taskmanager_job_latency_source_id_operator_id_operator_subtask_index_latency{job_id=\"$job_id\", operator_id=\"$operator\", quantile=\"0.99\"}",
+          "format": "heatmap",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "0.99",
+          "refId": "E"
+        },
+        {
+          "expr": "flink_taskmanager_job_latency_source_id_operator_id_operator_subtask_index_latency{job_id=\"$job_id\", operator_id=\"$operator\", quantile=\"0.999\"}",
+          "format": "heatmap",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "0.999",
+          "refId": "F"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": "30m",
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Latency",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    }
+  ],
+  "schemaVersion": 18,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "text": "Ride_Count",
+          "value": "Ride_Count"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(flink_jobmanager_job_uptime,job_name)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job Name",
+        "multi": false,
+        "name": "job_name",
+        "options": [],
+        "query": "label_values(flink_jobmanager_job_uptime,job_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "6b6a80bc7a39a67c9c412344e92c941c",
+          "value": "6b6a80bc7a39a67c9c412344e92c941c"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(flink_taskmanager_job_latency_source_id_operator_id_operator_subtask_index_latency,job_id)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job ID",
+        "multi": false,
+        "name": "job_id",
+        "options": [],
+        "query": "label_values(flink_taskmanager_job_latency_source_id_operator_id_operator_subtask_index_latency,job_id)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "Keyed_Aggregation____Sink:_Print_to_Std__Out",
+          "value": [
+            "Keyed_Aggregation____Sink:_Print_to_Std__Out"
+          ]
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(flink_taskmanager_job_task_numRecordsInPerSecond,task_name)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Source",
+        "multi": true,
+        "name": "source",
+        "options": [],
+        "query": "label_values(flink_taskmanager_job_task_numRecordsInPerSecond,task_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(flink_taskmanager_job_task_numRecordsInPerSecond,task_name)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Sink",
+        "multi": true,
+        "name": "sink",
+        "options": [],
+        "query": "label_values(flink_taskmanager_job_task_numRecordsInPerSecond,task_name)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "tags": [],
+          "text": "0a448493b4782967b150582570326227",
+          "value": [
+            "0a448493b4782967b150582570326227"
+          ]
+        },
+        "datasource": "Prometheus",
+        "definition": "label_values(flink_taskmanager_job_latency_source_id_operator_id_operator_subtask_index_latency,operator_id)",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Operator",
+        "multi": true,
+        "name": "operator",
+        "options": [],
+        "query": "label_values(flink_taskmanager_job_latency_source_id_operator_id_operator_subtask_index_latency,operator_id)",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "",
+  "title": "Flink Metrics",
+  "uid": "NtRyb9WZz",
+  "version": 1
+}
