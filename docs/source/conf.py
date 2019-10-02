@@ -87,8 +87,8 @@ html_theme_options = {
     'display_version': True,
     'prev_next_buttons_location': 'bottom',
     'style_external_links': False,
-    #'style_nav_header_background': '#2980B9',
-    'style_nav_header_background': '#78ad2d',
+    'style_nav_header_background': '#2980B9',
+    #'style_nav_header_background': '#78ad2d',
     # Toc options
     'collapse_navigation': True,
     'sticky_navigation': True,

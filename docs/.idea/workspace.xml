@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8e790bf7-f5ad-4a5c-86aa-f386885d9842" name="Default Changelist" comment="" />
+    <list default="true" id="8e790bf7-f5ad-4a5c-86aa-f386885d9842" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/build/html/_images/fridge.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/source/_images/fridge.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/environment.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/environment.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/doctrees/index.doctree" beforeDir="false" afterPath="$PROJECT_DIR$/build/doctrees/index.doctree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/.buildinfo" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/.buildinfo" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/_sources/index.rst.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/_sources/index.rst.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/genindex.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/genindex.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/html/searchindex.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/html/searchindex.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/conf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/index.rst" beforeDir="false" afterPath="$PROJECT_DIR$/source/index.rst" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,8 +27,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/source/conf.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="51" column="22" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
+            <state relative-caret-position="585">
+              <caret line="39" column="29" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -40,7 +54,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="-1145" />
+    <option name="y" value="-1177" />
     <option name="width" value="1920" />
     <option name="height" value="1145" />
   </component>
@@ -68,6 +82,12 @@
               <item name="docs" type="b2602c69:ProjectViewProjectNode" />
               <item name="docs" type="462c0819:PsiDirectoryNode" />
               <item name="source" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="docs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="docs" type="462c0819:PsiDirectoryNode" />
+              <item name="source" type="462c0819:PsiDirectoryNode" />
+              <item name="_images" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -157,7 +177,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="-1145" width="1920" height="1145" extended-state="0" />
+    <frame x="0" y="-1177" width="1920" height="1145" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24960506" />
@@ -225,8 +245,8 @@
     <entry file="file://$PROJECT_DIR$/source/implementation.rst" />
     <entry file="file://$PROJECT_DIR$/source/conf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="51" column="22" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
+        <state relative-caret-position="585">
+          <caret line="39" column="29" selection-start-line="39" selection-start-column="29" selection-end-line="39" selection-end-column="29" />
         </state>
       </provider>
     </entry>

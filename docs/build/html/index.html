@@ -53,7 +53,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search"  style="background: #78ad2d" >
+        <div class="wy-side-nav-search"  style="background: #2980B9" >
           
 
           
@@ -89,13 +89,15 @@
             
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Flink on a Fridge</a></li>
-<li><a class="reference internal" href="#overview">Overview</a><ul>
-<li><a class="reference internal" href="#for-chapters">for chapters</a></li>
-<li><a class="reference internal" href="#id1">for chapters</a></li>
-<li><a class="reference internal" href="#id2">for chapters</a></li>
-<li><a class="reference internal" href="#id3">for chapters</a></li>
-<li><a class="reference internal" href="#id4">for chapters</a></li>
+<li><a class="reference internal" href="#">Flink on a Fridge</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-started">Getting started</a><ul>
+<li><a class="reference internal" href="#preparing-the-pi-cluster">Preparing the Pi cluster</a></li>
+<li><a class="reference internal" href="#creating-docker-swarm">Creating Docker Swarm</a></li>
+<li><a class="reference internal" href="#building-custom-flink-image">Building custom Flink image</a></li>
+<li><a class="reference internal" href="#deploying-flink-image-on-a-cluster">Deploying Flink image on a Cluster</a></li>
 <li><a class="reference internal" href="#next-steps">Next steps</a></li>
 </ul>
 </li>
@@ -166,45 +168,65 @@
             
   <div class="section" id="flink-on-a-fridge">
 <h1>Flink on a Fridge<a class="headerlink" href="#flink-on-a-fridge" title="Permalink to this headline">¶</a></h1>
-</div>
 <div class="section" id="overview">
-<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
-<p>Of course, you are free to use your own marker characters (see the reST documentation), and use a deeper nesting level,
-but keep in mind that most target formats (HTML, LaTeX) have a limited supported nesting depth.</p>
-<div class="section" id="for-chapters">
-<h2>for chapters<a class="headerlink" href="#for-chapters" title="Permalink to this headline">¶</a></h2>
-<p>Of course, you are free to use your own marker characters (see the reST documentation), and use a deeper nesting level,
-but keep in mind that most target formats (HTML, LaTeX) have a limited supported nesting depth.</p>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The purpose of this documentation is to explain the deployment of <a class="reference external" href="https://flink.apache.org/">Apache Flink</a> on a cluster of Raspberry Pis, which we simply call it the Fridge.
+We used Docker Swarm to connect the Pis, and Docker Stack to deploy the custom built Flink image for ARMv7 processor.</p>
 </div>
-<div class="section" id="id1">
-<h2>for chapters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>Of course, you are free to use your own marker characters (see the reST documentation), and use a deeper nesting level,
-but keep in mind that most target formats (HTML, LaTeX) have a limited supported nesting depth.</p>
 </div>
-<div class="section" id="id2">
-<h2>for chapters<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>Of course, you are free to use your own marker characters (see the reST documentation), and use a deeper nesting level,
-but keep in mind that most target formats (HTML, LaTeX) have a limited supported nesting depth.</p>
+<div class="section" id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<dl class="docutils">
+<dt>First of all, the hardware:</dt>
+<dd><ul class="first last simple">
+<li>Few Raspberry Pi devices: we used 5 of Raspberry Pi 3b</li>
+<li>Each Pi requires a micro SD card to run an OS</li>
+<li>A network switch</li>
+<li>A router</li>
+<li>Power source</li>
+<li>Network cables to connect everything together</li>
+</ul>
+</dd>
+</dl>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/fridge.jpg"><img alt="The Fridge" src="_images/fridge.jpg" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text">The Fridge constructed in INRIA, later</span></p>
 </div>
-<div class="section" id="id3">
-<h2>for chapters<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<p>Of course, you are free to use your own marker characters (see the reST documentation), and use a deeper nesting level,
-but keep in mind that most target formats (HTML, LaTeX) have a limited supported nesting depth.</p>
+<div class="section" id="preparing-the-pi-cluster">
+<h2>Preparing the Pi cluster<a class="headerlink" href="#preparing-the-pi-cluster" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Install the Operating System on SD cards</li>
+</ol>
+<p>Download the latest version of <a class="reference external" href="https://www.raspberrypi.org/downloads/raspbian/">Raspbian Buster Lite</a> and burn the image using <a class="reference external" href="https://www.balena.io/etcher/">Etcher</a> .</p>
 </div>
-<div class="section" id="id4">
-<h2>for chapters<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<p>Of course, you are free to use your own marker characters (see the reST documentation), and use a deeper nesting level,
-but keep in mind that most target formats (HTML, LaTeX) have a limited supported nesting depth.</p>
+<div class="section" id="creating-docker-swarm">
+<h2>Creating Docker Swarm<a class="headerlink" href="#creating-docker-swarm" title="Permalink to this headline">¶</a></h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel augue finibus, porta lorem in, congue metus.
+Curabitur sodales mi sodales, fermentum nulla at, pellentesque urna. Nunc porta iaculis nibh vitae convallis.
+Phasellus rhoncus ipsum vel nulla elementum, non egestas velit euismod</p>
+</div>
+<div class="section" id="building-custom-flink-image">
+<h2>Building custom Flink image<a class="headerlink" href="#building-custom-flink-image" title="Permalink to this headline">¶</a></h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel augue finibus, porta lorem in, congue metus.
+Curabitur sodales mi sodales, fermentum nulla at, pellentesque urna. Nunc porta iaculis nibh vitae convallis.
+Phasellus rhoncus ipsum vel nulla elementum, non egestas velit euismod</p>
+</div>
+<div class="section" id="deploying-flink-image-on-a-cluster">
+<h2>Deploying Flink image on a Cluster<a class="headerlink" href="#deploying-flink-image-on-a-cluster" title="Permalink to this headline">¶</a></h2>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel augue finibus, porta lorem in, congue metus.
+Curabitur sodales mi sodales, fermentum nulla at, pellentesque urna. Nunc porta iaculis nibh vitae convallis.
+Phasellus rhoncus ipsum vel nulla elementum, non egestas velit euismod</p>
 </div>
 <div class="section" id="next-steps">
 <h2>Next steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
-<p>Of course, you are free to use your own marker characters (see the reST documentation), and use a deeper nesting level,
-but keep in mind that most target formats (HTML, LaTeX) have a limited supported nesting depth.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel augue finibus, porta lorem in, congue metus.
+Curabitur sodales mi sodales, fermentum nulla at, pellentesque urna. Nunc porta iaculis nibh vitae convallis.
+Phasellus rhoncus ipsum vel nulla elementum, non egestas velit euismod</p>
 </div>
 </div>
 <div class="section" id="help">
 <h1>Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h1>
-<p>if you need help, don’t hesitate to contact me</p>
+<p>For more information, please contact: 9911thumb&amp;pinky</p>
 </div>
 
 
