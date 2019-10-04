@@ -61,7 +61,7 @@ services:
           - node.hostname == worker04
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:6.1.3
     depends_on:
       - prometheus
     networks:
