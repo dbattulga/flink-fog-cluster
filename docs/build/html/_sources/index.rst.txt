@@ -6,8 +6,9 @@ Flink on a Fridge
 Overview
 ********
 
-The purpose of this documentation is to explain the deployment of `Apache Flink <https://flink.apache.org/>`_ on a cluster of Raspberry Pis, which we simply call it the Fridge.
+The purpose of this documentation is to explain the deployment of `Apache Flink <https://flink.apache.org/>`_ on a cluster of Raspberry Pis, aka the Fridge.
 We used Docker Swarm to connect the Pis, and used Docker Stack to deploy the custom built Flink docker image for ARMv7 processor.
+
 
 ==========
 Deployment
@@ -27,6 +28,7 @@ First of all, the hardware:
   :alt: The Fridge
 
   The Fridge constructed in INRIA, later used for the deployment of the Flink stack
+
 
 ************************
 Preparing the Pi cluster
@@ -79,6 +81,7 @@ And set the static IP address by editing */etc/dhcpcd.conf* file
 
 This process should be replicated on each Pis.
 
+
 *********************
 Creating Docker Swarm
 *********************
@@ -122,7 +125,23 @@ If the swarm initialization was successful, it should look like this. Now we're 
 .. image:: _images/swarm.png
   :width: 700
   :align: center
-  :alt: Docker Swarm Screenshot
+  :alt: Docker Swarm CLI
+
+Additionally, you can deploy the visualizer service on a manager node to monitor the cluster on the browser.
+
+.. code-block:: bash
+
+  docker service create \
+   --name=viz \
+   --publish=8080:[Your preferred port, 9999 for example]/tcp \
+   --constraint=node.role==manager \
+   --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+  alexellis2/visualizer-arm:latest
+
+.. image:: _images/swarm_viz.png
+  :width: 600
+  :align: center
+  :alt: Docker Swarm on browser
 
 
 ***************************
@@ -130,35 +149,163 @@ Building custom Flink image
 ***************************
 
 Short story is there's currently no native support for ARMv7 architecture for Flink Docker image.
-Also, you'll have to play with some Flink configurations in order to able to run it on Raspberry Pi.
+Also, you'll have to `download Flink <https://flink.apache.org/downloads.html>`_ and play with some configurations in order to able to run it on Raspberry Pi.
 
 1. Play with Flink configurations
 
-You can see all Apache Flink configurations `here <https://ci.apache.org/projects/flink/flink-docs-stable/ops/config.html>`_ and in *flink-conf.yaml* file, change the default
-*jobmanager.heap.size* to *512m* and *taskmanager.heap.size* as *256m*. Those memory sizes were set considering the memory size of
+You can read more about Apache Flink configurations `here <https://ci.apache.org/projects/flink/flink-docs-stable/ops/config.html>`_.
+Inside *conf* directory, edit the *flink-conf.yaml* file, change the default *jobmanager.heap.size* to *512m* and *taskmanager.heap.size* as *256m*. Those memory sizes were set considering the memory size of
 Raspberry Pi device and number of task managers might be deployed in the future.
 
 .. note::
-  Additionally, you might want to change *TM_MAX_OFFHEAP_SIZE="1G"* in *taskmanager.sh* file
+  Additionally, you might want to change *TM_MAX_OFFHEAP_SIZE="1G"* in *bin/taskmanager.sh* file
+
+
+2. Prepare the Dockerfile
+
+There is an official Flink repository about building `Apache Flink job cluster Docker image <https://github.com/apache/flink/tree/master/flink-container/docker>`_.
+But it requires users to include their own Flink jobs (JARs), and build a Docker image for custom Flink stack. Our goal is to avoid building a Docker image every time user made a change in a Flink job.
+Based on the Dockerfile of this repository, we can build our custom Flink Docker image using previously configured Flink.
+
+.. code-block:: dockerfile
+
+  FROM openjdk:8-jre-alpine
+  # Install requirements
+  RUN apk add --no-cache bash snappy libc6-compat
+  # Copy necessary files
+  COPY flink-1.8.0 /flink
+  ENV FLINK_HOME /flink
+  COPY /flink/flink-conf.yaml $FLINK_HOME/conf/flink-conf.yaml
+  COPY /flink/taskmanager.sh $FLINK_HOME/bin/taskmanager.sh
+  ENV PATH $PATH:$FLINK_HOME/bin
+
+
+You can find the Dockerfile `here <https://github.com/jazz09/flink-fog-cluster/blob/master/Dockerfile>`__.
+
+.. note::
+  We're using Flink 1.8.0 as a base. You have to replace it with your current version.
+
+3. Build the Flink image
+
+To build the Docker image for ARMv7, let's use Docker's *buildx* feature from `19.03 version <https://docs.docker.com/buildx/working-with-buildx/>`_. For more information,
+you can find good examples such as `this <https://collabnix.com/building-arm-based-docker-images-on-docker-desktop-made-possible-using-buildx/>`_ blog post.
+
+This is the example of building the Docker image and pushing it to Docker Hub. By using the public Docker Hub repository, you can easily deploy/pull images to the Raspberry Pis.
+
+.. code-block:: bash
+
+  $docker buildx build --platform linux/arm/v7 -t digitaljazz/flink-1.8.0-armv7:latest --push .
+
+You can find the Flink Docker image for Raspberry Pi `here <https://cloud.docker.com/u/digitaljazz/repository/docker/digitaljazz/flink-1.8.0-armv7>`__
 
 **********************************
 Deploying Flink image on a Cluster
 **********************************
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel augue finibus, porta lorem in, congue metus.
-Curabitur sodales mi sodales, fermentum nulla at, pellentesque urna. Nunc porta iaculis nibh vitae convallis.
-Phasellus rhoncus ipsum vel nulla elementum, non egestas velit euismod
+1. Prepare YAML file
 
-**********
-Next steps
-**********
+You can make your own *docker-stack.yaml* file to configure the Flink image before deploying. For example:
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel augue finibus, porta lorem in, congue metus.
-Curabitur sodales mi sodales, fermentum nulla at, pellentesque urna. Nunc porta iaculis nibh vitae convallis.
-Phasellus rhoncus ipsum vel nulla elementum, non egestas velit euismod
+.. code-block:: yaml
 
-====
-Help
-====
+    version: "3"
+    services:
+      jobmanager:
+        image: digitaljazz/flink-1.8.0-armv7:latest
+        ports:
+          - "8081:8081"
+        command: jobmanager.sh start-foreground jobmanager
+        networks:
+          flinknet:
+            aliases:
+              - jobmanager
+        deploy:
+          replicas: 1
+          placement:
+            constraints:
+              - node.hostname == worker04
 
-For more information, please contact: 9911thumb&pinky
+      taskmanager:
+        image: digitaljazz/flink-1.8.0-armv7:latest
+        depends_on:
+          - jobmanager
+        command: taskmanager.sh start-foreground -Djobmanager.rpc.address=jobmanager
+        networks:
+          - flinknet
+        deploy:
+          replicas: 3
+          placement:
+            constraints:
+              - node.hostname != worker04
+              - node.hostname != worker01
+
+    networks:
+      flinknet:
+        driver: overlay
+
+Here we used the previously built Docker image. You can specify how many Job/Task managers should run on which nodes. `This one <https://github.com/jazz09/flink-fog-cluster/blob/master/docker-stack.yaml>`_
+is the YAML we used to create Docker Stack with Flink, Mosquitto, Prometheus and Grafana.
+
+.. note::
+  We're going to use Docker stack to deploy on a swarm, so use YAML version 3
+
+2. Deploy the image
+
+Run Docker stack deploy on a Leader node to deploy.
+
+.. code-block:: bash
+
+  docker stack deploy --compose-file docker-stack.yaml flink
+
+If you're deploying the images for the first time, it might take some minutes to deploy.
+
+You can check if the docker services by:
+
+.. code-block:: bash
+
+  $docker service ls
+
+.. image:: _images/docker_service_ls.png
+  :width: 600
+  :align: center
+  :alt: Docker Services
+
+And on the browser:
+
+.. image:: _images/docker_stack_viz.png
+  :width: 600
+  :align: center
+  :alt: Docker Stack visualized
+
+3. Scaling the services
+
+Additionally, you can scale (add or delete) the service of your choice. For example using:
+
+.. code-block:: bash
+
+  $docker service scale flink_taskmanager=5
+
+.. image:: _images/tm_scale.png
+  :width: 600
+  :align: center
+  :alt: Taskmanager Scale to 5
+
+And the result should look like this:
+
+.. image:: _images/final.png
+  :width: 600
+  :align: center
+  :alt: Docker Stack Final
+
+*********
+Next step
+*********
+
+Please find the whole repository `here <https://github.com/jazz09/flink-fog-cluster>`__.
+You can run your own Flink job on a Jobmanager node using the web browser or the following command.
+
+.. code-block:: bash
+
+  $JOBMANAGER_CONTAINER=$(docker ps --filter name=jobmanager --format={{.ID}})
+  $docker cp path/to/jar "$JOBMANAGER_CONTAINER":/job.jar
+  $docker exec -t -i "$JOBMANAGER_CONTAINER" flink run /job.jar

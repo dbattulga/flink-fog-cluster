@@ -98,10 +98,9 @@
 <li><a class="reference internal" href="#creating-docker-swarm">Creating Docker Swarm</a></li>
 <li><a class="reference internal" href="#building-custom-flink-image">Building custom Flink image</a></li>
 <li><a class="reference internal" href="#deploying-flink-image-on-a-cluster">Deploying Flink image on a Cluster</a></li>
-<li><a class="reference internal" href="#next-steps">Next steps</a></li>
+<li><a class="reference internal" href="#next-step">Next step</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#help">Help</a></li>
 </ul>
 </div>
             
@@ -170,7 +169,7 @@
 <h1>Flink on a Fridge<a class="headerlink" href="#flink-on-a-fridge" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>The purpose of this documentation is to explain the deployment of <a class="reference external" href="https://flink.apache.org/">Apache Flink</a> on a cluster of Raspberry Pis, which we simply call it the Fridge.
+<p>The purpose of this documentation is to explain the deployment of <a class="reference external" href="https://flink.apache.org/">Apache Flink</a> on a cluster of Raspberry Pis, aka the Fridge.
 We used Docker Swarm to connect the Pis, and used Docker Stack to deploy the custom built Flink docker image for ARMv7 processor.</p>
 </div>
 </div>
@@ -260,39 +259,149 @@ We used Docker Swarm to connect the Pis, and used Docker Stack to deploy the cus
 </pre></div>
 </div>
 <p>If the swarm initialization was successful, it should look like this. Now we’re ready to deploy Flink.</p>
-<a class="reference internal image-reference" href="_images/swarm.png"><img alt="Docker Swarm Screenshot" class="align-center" src="_images/swarm.png" style="width: 700px;" /></a>
+<a class="reference internal image-reference" href="_images/swarm.png"><img alt="Docker Swarm CLI" class="align-center" src="_images/swarm.png" style="width: 700px;" /></a>
+<p>Additionally, you can deploy the visualizer service on a manager node to monitor the cluster on the browser.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker service create <span class="se">\</span>
+ --name<span class="o">=</span>viz <span class="se">\</span>
+ --publish<span class="o">=</span><span class="m">8080</span>:<span class="o">[</span>Your preferred port, <span class="m">9999</span> <span class="k">for</span> example<span class="o">]</span>/tcp <span class="se">\</span>
+ --constraint<span class="o">=</span>node.role<span class="o">==</span>manager <span class="se">\</span>
+ --mount<span class="o">=</span><span class="nv">type</span><span class="o">=</span>bind,src<span class="o">=</span>/var/run/docker.sock,dst<span class="o">=</span>/var/run/docker.sock <span class="se">\</span>
+alexellis2/visualizer-arm:latest
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/swarm_viz.png"><img alt="Docker Swarm on browser" class="align-center" src="_images/swarm_viz.png" style="width: 600px;" /></a>
 </div>
 <div class="section" id="building-custom-flink-image">
 <h2>Building custom Flink image<a class="headerlink" href="#building-custom-flink-image" title="Permalink to this headline">¶</a></h2>
 <p>Short story is there’s currently no native support for ARMv7 architecture for Flink Docker image.
-Also, you’ll have to play with some Flink configurations in order to able to run it on Raspberry Pi.</p>
+Also, you’ll have to <a class="reference external" href="https://flink.apache.org/downloads.html">download Flink</a> and play with some configurations in order to able to run it on Raspberry Pi.</p>
 <ol class="arabic simple">
 <li>Play with Flink configurations</li>
 </ol>
-<p>You can see all Apache Flink configurations <a class="reference external" href="https://ci.apache.org/projects/flink/flink-docs-stable/ops/config.html">here</a> and in <em>flink-conf.yaml</em> file, change the default
-<em>jobmanager.heap.size</em> to <em>512m</em> and <em>taskmanager.heap.size</em> as <em>256m</em>. Those memory sizes were set considering the memory size of
+<p>You can read more about Apache Flink configurations <a class="reference external" href="https://ci.apache.org/projects/flink/flink-docs-stable/ops/config.html">here</a>.
+Inside <em>conf</em> directory, edit the <em>flink-conf.yaml</em> file, change the default <em>jobmanager.heap.size</em> to <em>512m</em> and <em>taskmanager.heap.size</em> as <em>256m</em>. Those memory sizes were set considering the memory size of
 Raspberry Pi device and number of task managers might be deployed in the future.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Additionally, you might want to change <em>TM_MAX_OFFHEAP_SIZE=”1G”</em> in <em>taskmanager.sh</em> file</p>
+<p class="last">Additionally, you might want to change <em>TM_MAX_OFFHEAP_SIZE=”1G”</em> in <em>bin/taskmanager.sh</em> file</p>
 </div>
+<ol class="arabic simple" start="2">
+<li>Prepare the Dockerfile</li>
+</ol>
+<p>There is an official Flink repository about building <a class="reference external" href="https://github.com/apache/flink/tree/master/flink-container/docker">Apache Flink job cluster Docker image</a>.
+But it requires users to include their own Flink jobs (JARs), and build a Docker image for custom Flink stack. Our goal is to avoid building a Docker image every time user made a change in a Flink job.
+Based on the Dockerfile of this repository, we can build our custom Flink Docker image using previously configured Flink.</p>
+<div class="highlight-dockerfile notranslate"><div class="highlight"><pre><span></span><span class="k">FROM</span><span class="s"> openjdk:8-jre-alpine</span>
+<span class="c"># Install requirements</span>
+<span class="k">RUN</span> apk add --no-cache bash snappy libc6-compat
+<span class="c"># Copy necessary files</span>
+COPY flink-1.8.0 /flink
+<span class="k">ENV</span><span class="s"> FLINK_HOME /flink</span>
+COPY /flink/flink-conf.yaml <span class="nv">$FLINK_HOME</span>/conf/flink-conf.yaml
+COPY /flink/taskmanager.sh <span class="nv">$FLINK_HOME</span>/bin/taskmanager.sh
+<span class="k">ENV</span><span class="s"> PATH $PATH:$FLINK_HOME/bin</span>
+</pre></div>
+</div>
+<p>You can find the Dockerfile <a class="reference external" href="https://github.com/jazz09/flink-fog-cluster/blob/master/Dockerfile">here</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We’re using Flink 1.8.0 as a base. You have to replace it with your current version.</p>
+</div>
+<ol class="arabic simple" start="3">
+<li>Build the Flink image</li>
+</ol>
+<p>To build the Docker image for ARMv7, let’s use Docker’s <em>buildx</em> feature from <a class="reference external" href="https://docs.docker.com/buildx/working-with-buildx/">19.03 version</a>. For more information,
+you can find good examples such as <a class="reference external" href="https://collabnix.com/building-arm-based-docker-images-on-docker-desktop-made-possible-using-buildx/">this</a> blog post.</p>
+<p>This is the example of building the Docker image and pushing it to Docker Hub. By using the public Docker Hub repository, you can easily deploy/pull images to the Raspberry Pis.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$docker</span> buildx build --platform linux/arm/v7 -t digitaljazz/flink-1.8.0-armv7:latest --push .
+</pre></div>
+</div>
+<p>You can find the Flink Docker image for Raspberry Pi <a class="reference external" href="https://cloud.docker.com/u/digitaljazz/repository/docker/digitaljazz/flink-1.8.0-armv7">here</a></p>
 </div>
 <div class="section" id="deploying-flink-image-on-a-cluster">
 <h2>Deploying Flink image on a Cluster<a class="headerlink" href="#deploying-flink-image-on-a-cluster" title="Permalink to this headline">¶</a></h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel augue finibus, porta lorem in, congue metus.
-Curabitur sodales mi sodales, fermentum nulla at, pellentesque urna. Nunc porta iaculis nibh vitae convallis.
-Phasellus rhoncus ipsum vel nulla elementum, non egestas velit euismod</p>
+<ol class="arabic simple">
+<li>Prepare YAML file</li>
+</ol>
+<p>You can make your own <em>docker-stack.yaml</em> file to configure the Flink image before deploying. For example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">version</span><span class="p p-Indicator">:</span> <span class="s">&quot;3&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">services</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">jobmanager</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">digitaljazz/flink-1.8.0-armv7:latest</span>
+    <span class="l l-Scalar l-Scalar-Plain">ports</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="s">&quot;8081:8081&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">jobmanager.sh start-foreground jobmanager</span>
+    <span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">flinknet</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">aliases</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">jobmanager</span>
+    <span class="l l-Scalar l-Scalar-Plain">deploy</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">replicas</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+      <span class="l l-Scalar l-Scalar-Plain">placement</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">constraints</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">node.hostname == worker04</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">taskmanager</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">image</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">digitaljazz/flink-1.8.0-armv7:latest</span>
+    <span class="l l-Scalar l-Scalar-Plain">depends_on</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">jobmanager</span>
+    <span class="l l-Scalar l-Scalar-Plain">command</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">taskmanager.sh start-foreground -Djobmanager.rpc.address=jobmanager</span>
+    <span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">flinknet</span>
+    <span class="l l-Scalar l-Scalar-Plain">deploy</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">replicas</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+      <span class="l l-Scalar l-Scalar-Plain">placement</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">constraints</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">node.hostname != worker04</span>
+          <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">node.hostname != worker01</span>
+
+<span class="l l-Scalar l-Scalar-Plain">networks</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">flinknet</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">driver</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">overlay</span>
+</pre></div>
 </div>
-<div class="section" id="next-steps">
-<h2>Next steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel augue finibus, porta lorem in, congue metus.
-Curabitur sodales mi sodales, fermentum nulla at, pellentesque urna. Nunc porta iaculis nibh vitae convallis.
-Phasellus rhoncus ipsum vel nulla elementum, non egestas velit euismod</p>
+<p>Here we used the previously built Docker image. You can specify how many Job/Task managers should run on which nodes. <a class="reference external" href="https://github.com/jazz09/flink-fog-cluster/blob/master/docker-stack.yaml">This one</a>
+is the YAML we used to create Docker Stack with Flink, Mosquitto, Prometheus and Grafana.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We’re going to use Docker stack to deploy on a swarm, so use YAML version 3</p>
+</div>
+<ol class="arabic simple" start="2">
+<li>Deploy the image</li>
+</ol>
+<p>Run Docker stack deploy on a Leader node to deploy.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker stack deploy --compose-file docker-stack.yaml flink
+</pre></div>
+</div>
+<p>If you’re deploying the images for the first time, it might take some minutes to deploy.</p>
+<p>You can check if the docker services by:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$docker</span> service ls
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/docker_service_ls.png"><img alt="Docker Services" class="align-center" src="_images/docker_service_ls.png" style="width: 600px;" /></a>
+<p>And on the browser:</p>
+<a class="reference internal image-reference" href="_images/docker_stack_viz.png"><img alt="Docker Stack visualized" class="align-center" src="_images/docker_stack_viz.png" style="width: 600px;" /></a>
+<ol class="arabic simple" start="3">
+<li>Scaling the services</li>
+</ol>
+<p>Additionally, you can scale (add or delete) the service of your choice. For example using:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$docker</span> service scale <span class="nv">flink_taskmanager</span><span class="o">=</span><span class="m">5</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/tm_scale.png"><img alt="Taskmanager Scale to 5" class="align-center" src="_images/tm_scale.png" style="width: 600px;" /></a>
+<p>And the result should look like this:</p>
+<a class="reference internal image-reference" href="_images/final.png"><img alt="Docker Stack Final" class="align-center" src="_images/final.png" style="width: 600px;" /></a>
+</div>
+<div class="section" id="next-step">
+<h2>Next step<a class="headerlink" href="#next-step" title="Permalink to this headline">¶</a></h2>
+<p>Please find the whole repository <a class="reference external" href="https://github.com/jazz09/flink-fog-cluster">here</a>.
+You can run your own Flink job on a Jobmanager node using the web browser or the following command.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$JOBMANAGER_CONTAINER</span><span class="o">=</span><span class="k">$(</span>docker ps --filter <span class="nv">name</span><span class="o">=</span>jobmanager --format<span class="o">={{</span>.ID<span class="o">}}</span><span class="k">)</span>
+<span class="nv">$docker</span> cp path/to/jar <span class="s2">&quot;</span><span class="nv">$JOBMANAGER_CONTAINER</span><span class="s2">&quot;</span>:/job.jar
+<span class="nv">$docker</span> <span class="nb">exec</span> -t -i <span class="s2">&quot;</span><span class="nv">$JOBMANAGER_CONTAINER</span><span class="s2">&quot;</span> flink run /job.jar
+</pre></div>
 </div>
 </div>
-<div class="section" id="help">
-<h1>Help<a class="headerlink" href="#help" title="Permalink to this headline">¶</a></h1>
-<p>For more information, please contact: 9911thumb&amp;pinky</p>
 </div>
 
 
