@@ -133,7 +133,7 @@ Additionally, you can deploy the visualizer service on a manager node to monitor
 
   docker service create \
    --name=viz \
-   --publish=8080:[Your preferred port, 9999 for example]/tcp \
+   --publish=[Your preferred port, 9999 for example]:8080/tcp \
    --constraint=node.role==manager \
    --mount=type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
   alexellis2/visualizer-arm:latest
